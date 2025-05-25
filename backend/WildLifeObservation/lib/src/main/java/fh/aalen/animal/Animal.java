@@ -2,6 +2,10 @@ package fh.aalen.animal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
+import fh.aalen.observed.Observed;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Animal {
@@ -12,6 +16,11 @@ private String gender;
 private int estimated_age;
 private double estimated_weight;
 private double estimated_size;
+
+@OneToMany(mappedBy = "animal")
+@JsonManagedReference ("animal-observed")
+private List<Observed> observations;
+
 
 
 public Animal() {
@@ -63,5 +72,13 @@ public double getEstimated_size() {
 
 public void setEstimated_size(double estimated_size) {
 	this.estimated_size = estimated_size;
+}
+
+public List<Observed> getObservations() {
+    return observations;
+}
+
+public void setObservations(List<Observed> observations) {
+    this.observations = observations;
 }
 }
