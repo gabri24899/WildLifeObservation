@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="WildLifeObservation/.gradle/8.9/dependencies-accessors/eef53cde5b13261cb3e36f46d184d07506c07c85/sources"/>
+	<classpathentry kind="src" path="WildLifeObservation/lib/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
+	<classpathentry kind="src" path="WildLifeObservation/lib/src/test/java"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

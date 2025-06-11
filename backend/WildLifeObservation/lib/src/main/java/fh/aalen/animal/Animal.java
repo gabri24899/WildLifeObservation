@@ -2,66 +2,103 @@ package fh.aalen.animal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+import fh.aalen.genus.Genus;
+import fh.aalen.observed.Observed;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Animal {
 
-	@Id
-private int id;
-private String gender;
-private int estimated_age;
-private double estimated_weight;
-private double estimated_size;
+    @Id
+    private int id;
+    private String gender;
+    private int estimatedAge;
+    private double estimatedWeight;
+    private double estimatedSize;
 
+    @OneToMany(mappedBy = "animal")
+    @JsonManagedReference("animal-observed")
+    private List<Observed> observations;
 
-public Animal() {
-	super();
-}
-public Animal(String gender, int estimated_age, double estimated_weight, double estimated_size, int id) {
-	super();
-	this.id = id;
-	this.gender = gender;
-	this.estimated_age = estimated_age;
-	this.estimated_weight = estimated_weight;
-	this.estimated_size = estimated_size;
-}
-public int getID() {
-	return id;
-}
+    @ManyToOne
+    @JoinColumn(name = "genus_id")
+    @JsonBackReference("genus-animal")
+    private Genus genus;
 
-public void setID(int id) {
-	this.id = id;
-}
+    public Animal() {
+        super();
+    }
 
-public String getGender() {
-	return gender;
-}
+    public Animal(int id, String gender, int estimatedAge, double estimatedWeight, double estimatedSize) {
+        super();
+        this.id = id;
+        this.gender = gender;
+        this.estimatedAge = estimatedAge;
+        this.estimatedWeight = estimatedWeight;
+        this.estimatedSize = estimatedSize;
+    }
 
-public void setGender(String gender) {
-	this.gender = gender;
-}
+    public int getId() {
+        return id;
+    }
 
-public int getEstimated_age() {
-	return estimated_age;
-}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-public void setEstimated_age(int estimated_age) {
-	this.estimated_age = estimated_age;
-}
+    public String getGender() {
+        return gender;
+    }
 
-public double getEstimated_weight() {
-	return estimated_weight;
-}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-public void setEstimated_weight(double estimated_weight) {
-	this.estimated_weight = estimated_weight;
-}
+    public int getEstimatedAge() {
+        return estimatedAge;
+    }
 
-public double getEstimated_size() {
-	return estimated_size;
-}
+    public void setEstimatedAge(int estimatedAge) {
+        this.estimatedAge = estimatedAge;
+    }
 
-public void setEstimated_size(double estimated_size) {
-	this.estimated_size = estimated_size;
-}
+    public double getEstimatedWeight() {
+        return estimatedWeight;
+    }
+
+    public void setEstimatedWeight(double estimatedWeight) {
+        this.estimatedWeight = estimatedWeight;
+    }
+
+    public double getEstimatedSize() {
+        return estimatedSize;
+    }
+
+    public void setEstimatedSize(double estimatedSize) {
+        this.estimatedSize = estimatedSize;
+    }
+
+    public List<Observed> getObservations() {
+        return observations;
+    }
+
+    public void setObservations(List<Observed> observations) {
+        this.observations = observations;
+    }
+
+    public Genus getGenus() {
+        return genus;
+    }
+
+    public void setGenus(Genus genus) {
+        this.genus = genus;
+    }
 }
