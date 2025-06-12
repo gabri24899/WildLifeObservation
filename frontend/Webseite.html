@@ -50,7 +50,7 @@
   <table id="animalTable">
     <thead>
       <tr>
-        <th>ID</th><th>Geschlecht</th><th>Alter</th><th>Gewicht</th><th>Größe</th><th>Aktionen</th>
+        <th>ID</th><th>Geschlecht</th><th>Alter</th><th>Gewicht</th><th>Größe</th><th>Gattung</th><th>Aktionen</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -63,6 +63,29 @@
     <label>Alter: <input type="number" name="estimatedAge" required></label>
     <label>Gewicht: <input type="number" name="estimatedWeight" step="0.1" required></label>
     <label>Größe: <input type="number" name="estimatedSize" step="0.1" required></label>
+    <label>Gattung:
+      <select name="genusId" id="genusSelect" required>
+        <option value="">Bitte wählen</option>
+      </select>
+    </label>
+    <button type="submit">Hinzufügen</button>
+  </form>
+
+  <hr>
+
+  <h1>Gattungen</h1>
+  <table id="genusTable">
+    <thead>
+      <tr><th>ID</th><th>Bezeichnung</th><th>Lateinische Bezeichnung</th><th>Aktionen</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Neue Gattung anlegen</h2>
+  <form id="addGenusForm">
+    <label>ID: <input type="number" name="id" required></label>
+    <label>Bezeichnung: <input type="text" name="designation" required></label>
+    <label>Lateinische Bezeichnung: <input type="text" name="latinDesignation" required></label>
     <button type="submit">Hinzufügen</button>
   </form>
 
@@ -118,6 +141,7 @@
         const tbody = document.querySelector('#animalTable tbody');
         tbody.innerHTML = '';
         data.forEach(a => {
+          const genusName = a.genus ? `${a.genus.designation} (${a.genus.latinDesignation})` : '—';
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${a.id}</td>
@@ -125,6 +149,7 @@
             <td>${a.estimatedAge}</td>
             <td>${a.estimatedWeight}</td>
             <td>${a.estimatedSize}</td>
+            <td>${genusName}</td>
             <td><button onclick="deleteAnimal(${a.id})">Löschen</button></td>
           `;
           tbody.appendChild(tr);
@@ -145,7 +170,10 @@
       gender: form.gender.value,
       estimatedAge: parseInt(form.estimatedAge.value),
       estimatedWeight: parseFloat(form.estimatedWeight.value),
-      estimatedSize: parseFloat(form.estimatedSize.value)
+      estimatedSize: parseFloat(form.estimatedSize.value),
+      genus: {
+        id: parseInt(form.genusId.value)
+      }
     };
     fetch(apiBase + '/animal', {
       method: 'POST',
@@ -154,6 +182,63 @@
     }).then(() => {
       form.reset();
       loadAnimals();
+    });
+  });
+
+  // --- Gattungen ---
+  function loadGenus() {
+    fetch(apiBase + '/genus')
+      .then(res => res.json())
+      .then(data => {
+        // Dropdown für Tierformular
+        const select = document.getElementById('genusSelect');
+        select.innerHTML = '<option value="">Bitte wählen</option>';
+        data.forEach(g => {
+          const option = document.createElement('option');
+          option.value = g.id;
+          option.textContent = `${g.designation} (${g.latinDesignation})`;
+          select.appendChild(option);
+        });
+
+        // Tabelle anzeigen
+        const tbody = document.querySelector('#genusTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(g => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${g.id}</td>
+            <td>${g.designation}</td>
+            <td>${g.latinDesignation}</td>
+            <td><button onclick="deleteGenus(${g.id})">Löschen</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  }
+
+  function deleteGenus(id) {
+    fetch(apiBase + '/genus/' + id, { method: 'DELETE' })
+      .then(() => {
+        loadGenus();
+        loadAnimals(); // Tiere ggf. aktualisieren, falls Genus gelöscht wurde
+      });
+  }
+
+  document.getElementById('addGenusForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const genus = {
+      id: parseInt(form.id.value),
+      designation: form.designation.value,
+      latinDesignation: form.latinDesignation.value
+    };
+    fetch(apiBase + '/genus', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(genus)
+    }).then(() => {
+      form.reset();
+      loadGenus();
     });
   });
 
@@ -248,6 +333,7 @@
 
   // Lade alle Daten initial
   loadAnimals();
+  loadGenus();
   loadLocations();
   loadObservations();
 </script>

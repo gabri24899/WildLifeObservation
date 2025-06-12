@@ -1,0 +1,109 @@
+package fh.aalen.animal;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+import fh.aalen.genus.Genus;
+import fh.aalen.observed.Observed;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity //Macht als entität für Datenbank
+public class Animal {
+
+    @Id //Gibt Primärschlüssel an
+    private int id;
+    private String gender;
+    private int estimatedAge;
+    private double estimatedWeight;
+    private double estimatedSize;
+
+    //1:n Beziehung 
+    @OneToMany(mappedBy = "animal")
+    @JsonManagedReference("animal-observed")//Für endlosschleifen verhinderung
+    private List<Observed> observations;
+    //n:1 beziehung
+    @ManyToOne
+    @JoinColumn(name = "genus_id")
+    @JsonBackReference("genus-animal")
+    
+    private Genus genus;
+
+    //Konstruktoren
+    public Animal() {
+        super();
+    }
+
+    public Animal(int id, String gender, int estimatedAge, double estimatedWeight, double estimatedSize) {
+        super();
+        this.id = id;
+        this.gender = gender;
+        this.estimatedAge = estimatedAge;
+        this.estimatedWeight = estimatedWeight;
+        this.estimatedSize = estimatedSize;
+    }
+
+    
+    //Getter und Setter
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getEstimatedAge() {
+        return estimatedAge;
+    }
+
+    public void setEstimatedAge(int estimatedAge) {
+        this.estimatedAge = estimatedAge;
+    }
+
+    public double getEstimatedWeight() {
+        return estimatedWeight;
+    }
+
+    public void setEstimatedWeight(double estimatedWeight) {
+        this.estimatedWeight = estimatedWeight;
+    }
+
+    public double getEstimatedSize() {
+        return estimatedSize;
+    }
+
+    public void setEstimatedSize(double estimatedSize) {
+        this.estimatedSize = estimatedSize;
+    }
+
+    public List<Observed> getObservations() {
+        return observations;
+    }
+
+    public void setObservations(List<Observed> observations) {
+        this.observations = observations;
+    }
+
+    public Genus getGenus() {
+        return genus;
+    }
+
+    public void setGenus(Genus genus) {
+        this.genus = genus;
+    }
+}
