@@ -10,17 +10,17 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import fh.aalen.animal.Animal;
 
-@Entity
+@Entity //Für die Datenbank dadurch wird die Klasse als entität festegelegt
 public class Genus {
 
-    @Id
+    @Id  //Dient zur festlegung des Primärschlüssels
     private int id;
 
     private String latinDesignation;
     private String designation;
 
-    @OneToMany(mappedBy = "genus")
-    @JsonManagedReference("genus-animal")
+    @OneToMany(mappedBy = "genus") //Eine Gattung kann mehrere Tiere beinhalten daher 1:m
+    @JsonManagedReference("genus-animal")//Zur Verhinderung von Endlosschleifen dadurch geht genus-> Animal aber der Zurückverweis wird ignoriert animal-> genus 
     private List<Animal> animals;
 
     // Konstruktoren

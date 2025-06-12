@@ -1,6 +1,7 @@
 package fh.aalen.animal;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,25 +15,28 @@ import fh.aalen.observed.Observed;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity
+@Entity //Macht als entität für Datenbank
 public class Animal {
 
-    @Id
+    @Id //Gibt Primärschlüssel an
     private int id;
     private String gender;
     private int estimatedAge;
     private double estimatedWeight;
     private double estimatedSize;
 
+    //1:n Beziehung 
     @OneToMany(mappedBy = "animal")
-    @JsonManagedReference("animal-observed")
+    @JsonManagedReference("animal-observed")//Für endlosschleifen verhinderung
     private List<Observed> observations;
-
-    @ManyToOne
-    @JoinColumn(name = "genus_id")
-    @JsonBackReference("genus-animal")
+    //n:1 beziehung
+     @ManyToOne(fetch = FetchType.EAGER)
+    //@JoinColumn(name = "genus_id")
+    //@JsonBackReference("genus-animal")
+    
     private Genus genus;
 
+    //Konstruktoren
     public Animal() {
         super();
     }
@@ -46,6 +50,8 @@ public class Animal {
         this.estimatedSize = estimatedSize;
     }
 
+    
+    //Getter und Setter
     public int getId() {
         return id;
     }

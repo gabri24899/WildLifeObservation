@@ -8,11 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service //Dadurch wird klasse als Service komponente gekennzeichnet
 public class AnimalService {
 	@Autowired
 	private AnimalRepository animalRepository;
-	
+	//gibt liste der Tiere in Datenbank
 	public List<Animal> getAnimalList() {
 		ArrayList<Animal> mylist= new ArrayList<>();
 		Iterator<Animal> it = animalRepository.findAll().iterator();

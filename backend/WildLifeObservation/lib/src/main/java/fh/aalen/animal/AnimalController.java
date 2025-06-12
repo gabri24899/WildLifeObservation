@@ -13,22 +13,32 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnimalController {
 @Autowired
 AnimalService animalService;
+
+//Rückgabe der Liste aller Tiere
 @RequestMapping("/animal")
 public List<Animal> getAnimalList() {
 return animalService.getAnimalList();
 }
+
+//Rückgabe des Tiers anhand von id
 @RequestMapping("/animal/{id}")
 public Animal getAnimal(@PathVariable(value="id")int id) {
 return animalService.getAnimal(id);
 }
+
+//Post operation zum hinzufügen
 @RequestMapping(method=RequestMethod.POST, value="/animal")
 public void addAnimal(@RequestBody Animal animal) {
 animalService.addAnimal(animal);
 }
+
+//Put operation zum verändern
 @RequestMapping(method=RequestMethod.PUT, value="/animal/{id}")
 public void updateAnimal(@PathVariable(value="id")int id, @RequestBody Animal animal) {
 animalService.updateAnimal(id, animal);
 }
+
+//Delete operation zum Löschen
 @RequestMapping(method=RequestMethod.DELETE, value="/animal/{id}")
 public void deleteAnimal(@PathVariable(value="id") int id) {
 animalService.deleteAnimal(id);
