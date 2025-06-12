@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Wild Life Observation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  h1, h2 {
+    color: #2c3e50;
+  }
+  table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  table, th, td {
+    border: 1px solid #bdc3c7;
+  }
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  button {
+    cursor: pointer;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+  }
+  button:hover {
+    background-color: #3498db;
+  }
+  form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  form input, form select {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 200px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Tiere</h1>
+  <table id="animalTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Geschlecht</th><th>Alter</th><th>Gewicht</th><th>Größe</th><th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Neues Tier anlegen</h2>
+  <form id="addAnimalForm">
+    <label>ID: <input type="number" name="id" required></label>
+    <label>Geschlecht: <input type="text" name="gender" required></label>
+    <label>Alter: <input type="number" name="estimatedAge" required></label>
+    <label>Gewicht: <input type="number" name="estimatedWeight" step="0.1" required></label>
+    <label>Größe: <input type="number" name="estimatedSize" step="0.1" required></label>
+    <button type="submit">Hinzufügen</button>
+  </form>
+
+  <hr>
+
+  <h1>Orte</h1>
+  <table id="locationTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Kurzbezeichnung</th><th>Beschreibung</th><th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Neuen Ort anlegen</h2>
+  <form id="addLocationForm">
+    <label>ID: <input type="number" name="id" required></label>
+    <label>Kurzbezeichnung: <input type="text" name="shortTitle" required></label>
+    <label>Beschreibung: <input type="text" name="description" required></label>
+    <button type="submit">Hinzufügen</button>
+  </form>
+
+  <hr>
+
+  <h1>Beobachtungen</h1>
+  <table id="observedTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Tier ID</th><th>Ort ID</th><th>Datum</th><th>Zeit</th><th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Neue Beobachtung anlegen</h2>
+  <form id="addObservedForm">
+    <label>Tier ID: <input type="number" name="animalId" required></label>
+    <label>Ort ID: <input type="number" name="locationId" required></label>
+    <label>Datum: <input type="date" name="date" required></label>
+    <label>Zeit: <input type="time" name="time" required></label>
+    <button type="submit">Hinzufügen</button>
+  </form>
+
+<script>
+  const apiBase = 'http://localhost:8080';
+
+  // --- Tiere ---
+  function loadAnimals() {
+    fetch(apiBase + '/animal')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#animalTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(a => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${a.id}</td>
+            <td>${a.gender}</td>
+            <td>${a.estimatedAge}</td>
+            <td>${a.estimatedWeight}</td>
+            <td>${a.estimatedSize}</td>
+            <td><button onclick="deleteAnimal(${a.id})">Löschen</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  }
+
+  function deleteAnimal(id) {
+    fetch(apiBase + '/animal/' + id, { method: 'DELETE' })
+      .then(() => loadAnimals());
+  }
+
+  document.getElementById('addAnimalForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const animal = {
+      id: parseInt(form.id.value),
+      gender: form.gender.value,
+      estimatedAge: parseInt(form.estimatedAge.value),
+      estimatedWeight: parseFloat(form.estimatedWeight.value),
+      estimatedSize: parseFloat(form.estimatedSize.value)
+    };
+    fetch(apiBase + '/animal', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(animal)
+    }).then(() => {
+      form.reset();
+      loadAnimals();
+    });
+  });
+
+  // --- Locations ---
+  function loadLocations() {
+    fetch(apiBase + '/location')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#locationTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(l => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${l.id}</td>
+            <td>${l.shortTitle}</td>
+            <td>${l.description}</td>
+            <td><button onclick="deleteLocation(${l.id})">Löschen</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  }
+
+  function deleteLocation(id) {
+    fetch(apiBase + '/location/' + id, { method: 'DELETE' })
+      .then(() => loadLocations());
+  }
+
+  document.getElementById('addLocationForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const location = {
+      id: parseInt(form.id.value),
+      shortTitle: form.shortTitle.value,
+      description: form.description.value
+    };
+    fetch(apiBase + '/location', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(location)
+    }).then(() => {
+      form.reset();
+      loadLocations();
+    });
+  });
+
+  // --- Beobachtungen ---
+  function loadObservations() {
+    fetch(apiBase + '/observed')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#observedTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(o => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${o.id ?? '-'}</td>
+            <td>${o.animal?.id ?? '-'}</td>
+            <td>${o.location?.id ?? '-'}</td>
+            <td>${o.date ?? '-'}</td>
+            <td>${o.time ?? '-'}</td>
+            <td><button onclick="deleteObservation(${o.id})">Löschen</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  }
+
+  function deleteObservation(id) {
+    fetch(apiBase + '/observed/' + id, { method: 'DELETE' })
+      .then(() => loadObservations());
+  }
+
+  document.getElementById('addObservedForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.target;
+    const observed = {
+      animal: { id: parseInt(form.animalId.value) },
+      location: { id: parseInt(form.locationId.value) },
+      date: form.date.value,
+      time: form.time.value
+    };
+    fetch(apiBase + '/observed', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(observed)
+    }).then(() => {
+      form.reset();
+      loadObservations();
+    });
+  });
+
+  // Lade alle Daten initial
+  loadAnimals();
+  loadLocations();
+  loadObservations();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+package fh.aalen;
+
+public class CorsConfig {
+
+}
