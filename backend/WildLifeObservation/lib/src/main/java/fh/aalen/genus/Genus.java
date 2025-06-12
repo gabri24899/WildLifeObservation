@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -20,7 +20,8 @@ public class Genus {
     private String designation;
 
     @OneToMany(mappedBy = "genus") //Eine Gattung kann mehrere Tiere beinhalten daher 1:m
-    @JsonManagedReference("genus-animal")//Zur Verhinderung von Endlosschleifen dadurch geht genus-> Animal aber der Zurückverweis wird ignoriert animal-> genus 
+   // @JsonManagedReference("genus-animal")//Zur Verhinderung von Endlosschleifen dadurch geht genus-> Animal aber der Zurückverweis wird ignoriert animal-> genus 
+    @JsonIgnoreProperties("genus")
     private List<Animal> animals;
 
     // Konstruktoren

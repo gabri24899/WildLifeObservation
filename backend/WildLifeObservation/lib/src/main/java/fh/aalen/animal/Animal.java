@@ -13,6 +13,7 @@ import fh.aalen.genus.Genus;
 import fh.aalen.observed.Observed;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity //Macht als entität für Datenbank
@@ -31,9 +32,12 @@ public class Animal {
     private List<Observed> observations;
     //n:1 beziehung
      @ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "genus_id")
-    //@JsonBackReference("genus-animal")
+    @JoinColumn(name = "genus_id")
+     @JsonIgnoreProperties("animals") 											// wurde geändert
+    //@JsonBackReference("genus-animal") //  raus damit 
     
+     
+     
     private Genus genus;
 
     //Konstruktoren
