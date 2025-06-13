@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import fh.aalen.animal.Animal;
 import fh.aalen.location.Location;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -19,23 +20,31 @@ public class Observed {
     @ManyToOne
     @JoinColumn(name = "animal_id")
     @JsonBackReference ("animal-observed") // weil child seite animal und Location sind Parent
+    //@JsonIgnore
     private Animal animal;
 
     @ManyToOne
     @JoinColumn(name = "location_lnr")
     @JsonBackReference ("location-observed")
+   // @JsonIgnore
     private Location location;
 
     private LocalDate date;
     private LocalTime time;
+    
+   
 
     public Observed() {}
 
-    public Observed(Animal animal, Location location, LocalDate date, LocalTime time) {
-        this.animal = animal;
-        this.location = location;
+    public Observed(Integer animalId, Integer locationId, LocalDate date, LocalTime time) {
+    	 this.animal = new Animal();
+    	 this.animal.setId(animalId);
+    	    
+    	this.location = new Location();
+    	this.location.setId(locationId);
         this.date = date;
         this.time = time;
+        
     }
 
     // Getter und Setter
@@ -74,5 +83,12 @@ public class Observed {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+    public Integer getAnimalId() {
+        return animal != null ? animal.getId() : null;
+    }
+
+    public Integer getLocationId() {
+        return location != null ? location.getId() : null;
     }
 }

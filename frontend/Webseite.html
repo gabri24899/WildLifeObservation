@@ -296,8 +296,8 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${o.id ?? '-'}</td>
-            <td>${o.animal?.id ?? '-'}</td>
-            <td>${o.location?.id ?? '-'}</td>
+            <td>${o.animalId ?? '-'}</td>
+			<td>${o.locationId ?? '-'}</td>
             <td>${o.date ?? '-'}</td>
             <td>${o.time ?? '-'}</td>
             <td><button onclick="deleteObservation(${o.id})">Löschen</button></td>
