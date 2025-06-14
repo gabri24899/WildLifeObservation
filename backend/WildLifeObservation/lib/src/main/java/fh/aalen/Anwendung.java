@@ -3,12 +3,18 @@ package fh.aalen;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Startklasse der Anwendung.
+ */
 @SpringBootApplication
 public class Anwendung {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SpringApplication.run(Anwendung.class, args);
-	}
-
+    /**
+     * Einstiegspunkt der Anwendung.
+     * 
+     * @param args Kommandozeilenargumente
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Anwendung.class, args);
+    }
 }

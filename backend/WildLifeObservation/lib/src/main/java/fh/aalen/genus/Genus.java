@@ -4,31 +4,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import fh.aalen.animal.Animal;
 
-@Entity //Für die Datenbank dadurch wird die Klasse als entität festegelegt
+/**
+ * Entität für Genus (Gattung). Stellt die Tabelle 'Genus' in der Datenbank dar.
+ */
+@Entity // Für die Datenbank: legt die Klasse als Entität fest
 public class Genus {
 
-    @Id  //Dient zur festlegung des Primärschlüssels
+    @Id  // Primärschlüssel
     private int id;
 
     private String latinDesignation;
     private String designation;
 
-    @OneToMany(mappedBy = "genus") //Eine Gattung kann mehrere Tiere beinhalten daher 1:m
-   // @JsonManagedReference("genus-animal")//Zur Verhinderung von Endlosschleifen dadurch geht genus-> Animal aber der Zurückverweis wird ignoriert animal-> genus 
-    @JsonIgnoreProperties("genus")
+    @OneToMany(mappedBy = "genus") // Eine Gattung kann mehrere Tiere beinhalten (1:n)
+    @JsonIgnoreProperties("genus") // Verhindert Endlosschleifen bei der Serialisierung
     private List<Animal> animals;
 
-    // Konstruktoren
+    // Standardkonstruktor
     public Genus() {
         super();
     }
 
+    // Konstruktor mit Attributen
     public Genus(int id, String latinDesignation, String designation) {
         super();
         this.id = id;

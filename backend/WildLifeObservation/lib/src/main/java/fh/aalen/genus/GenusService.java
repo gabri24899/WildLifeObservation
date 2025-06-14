@@ -7,39 +7,61 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service //dadurch wird die Klasse als Service markiert
+@Service // Markiert die Klasse als Service-Komponente
 public class GenusService {
 
     @Autowired
     private GenusRepository genusRepository;
 
-    //Gibt Liste aller Gatungen zurück
+    /**
+     * Gibt eine Liste aller Gattungen zurück.
+     * 
+     * @return Liste aller Gattungen aus der Datenbank
+     */
     public List<Genus> getGenusList() {
-    	
-    	//Erstellt neue Liste und füllt sie mit Datenbank einträgen
+        // Erzeugt eine neue Liste und füllt sie mit Einträgen aus der Datenbank
         ArrayList<Genus> mylist = new ArrayList<>();
         Iterator<Genus> it = genusRepository.findAll().iterator();
-        while (it.hasNext())
+        while (it.hasNext()) {
             mylist.add(it.next());
+        }
         return mylist;
     }
     
-    //Gibt Gattung anhand von ID zurück
+    /**
+     * Gibt eine Gattung anhand der ID zurück.
+     * 
+     * @param id ID der Gattung
+     * @return Gattung mit der gegebenen ID oder null, falls nicht gefunden
+     */
     public Genus getGenus(int id) {
         return genusRepository.findById(id).orElse(null);
     }
     
-    //fügt neue Gattung zur Datenbank hinzu
+    /**
+     * Fügt eine neue Gattung in die Datenbank ein.
+     * 
+     * @param genus Gattung, die hinzugefügt werden soll
+     */
     public void addGenus(Genus genus) {
         genusRepository.save(genus);
     }
     
-    //ändert vorhandene Gattung
+    /**
+     * Aktualisiert eine vorhandene Gattung.
+     * 
+     * @param id ID der zu aktualisierenden Gattung
+     * @param genus Gattung mit den neuen Daten
+     */
     public void updateGenus(int id, Genus genus) {
         genusRepository.save(genus);
     }
 
-    //löscht eine Gattung anhand von der ID
+    /**
+     * Löscht eine Gattung anhand der ID.
+     * 
+     * @param id ID der zu löschenden Gattung
+     */
     public void deleteGenus(int id) {
         genusRepository.deleteById(id);
     }

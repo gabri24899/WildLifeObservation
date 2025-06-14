@@ -16,35 +16,37 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity //Macht als entität für Datenbank
+/**
+ * Entität für Tiere. Stellt die Tabelle 'Animal' in der Datenbank dar.
+ */
+@Entity
 public class Animal {
 
-    @Id //Gibt Primärschlüssel an
+    @Id // Primärschlüssel
     private int id;
+
     private String gender;
     private int estimatedAge;
     private double estimatedWeight;
     private double estimatedSize;
 
-    //1:n Beziehung 
+    // 1:n Beziehung zu den Beobachtungen (Observed)
     @OneToMany(mappedBy = "animal")
-    @JsonManagedReference("animal-observed")//Für endlosschleifen verhinderung
+    @JsonManagedReference("animal-observed") // Verhindert Endlosschleifen bei der Serialisierung
     private List<Observed> observations;
-    //n:1 beziehung
-     @ManyToOne(fetch = FetchType.EAGER)
+
+    // n:1 Beziehung zur Gattung (Genus)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genus_id")
-     @JsonIgnoreProperties("animals") 											// wurde geändert
-    //@JsonBackReference("genus-animal") //  raus damit 
-    
-     
-     
+    @JsonIgnoreProperties("animals") // Ignoriert die Liste animals, um Endlosschleifen zu vermeiden
     private Genus genus;
 
-    //Konstruktoren
+    // Standardkonstruktor
     public Animal() {
         super();
     }
 
+    // Konstruktor mit Attributen
     public Animal(int id, String gender, int estimatedAge, double estimatedWeight, double estimatedSize) {
         super();
         this.id = id;
@@ -54,8 +56,7 @@ public class Animal {
         this.estimatedSize = estimatedSize;
     }
 
-    
-    //Getter und Setter
+    // Getter und Setter
     public int getId() {
         return id;
     }

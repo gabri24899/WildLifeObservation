@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Location {
 
     @Id
-    
     private int id;
 
     private String shortTitle;
@@ -23,40 +22,83 @@ public class Location {
     @JsonManagedReference("location-observed")
     private List<Observed> observations;
 
-    // Standardkonstruktor
+    /**
+     * Standardkonstruktor.
+     */
     public Location() {
         super();
     }
 
     // Getter und Setter
+
+    /**
+     * Liefert die ID der Location.
+     * 
+     * @return id der Location
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Setzt die ID der Location.
+     * 
+     * @param id neue ID
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Liefert den kurzen Titel der Location.
+     * 
+     * @return shortTitle
+     */
     public String getShortTitle() {
         return shortTitle;
     }
 
+    /**
+     * Setzt den kurzen Titel der Location.
+     * 
+     * @param shortTitle neuer kurzer Titel
+     */
     public void setShortTitle(String shortTitle) {
         this.shortTitle = shortTitle;
     }
 
+    /**
+     * Liefert die Beschreibung der Location.
+     * 
+     * @return Beschreibung
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Setzt die Beschreibung der Location.
+     * 
+     * @param description neue Beschreibung
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Liefert die Liste der Beobachtungen, die mit dieser Location verbunden sind.
+     * 
+     * @return Liste von Observed-Objekten
+     */
     public List<Observed> getObservations() {
         return observations;
     }
 
+    /**
+     * Setzt die Liste der Beobachtungen.
+     * 
+     * @param observations neue Liste von Observed-Objekten
+     */
     public void setObservations(List<Observed> observations) {
         this.observations = observations;
     }

@@ -1,7 +1,11 @@
 package fh.aalen.animal;
 
 import org.springframework.data.repository.CrudRepository;
-//Repositors um Crud operationen auf Datenbank anzuwenden
+
+/**
+ * Repository-Interface für Animal-Entitäten.
+ * Ermöglicht CRUD-Operationen auf der Datenbank.
+ */
 public interface AnimalRepository extends CrudRepository<Animal, Integer> {
 
 }
