@@ -2,6 +2,8 @@ package fh.aalen.animal;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,58 +17,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AnimalController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AnimalController.class);
+
     @Autowired
     AnimalService animalService;
 
-    /**
-     * Gibt die Liste aller Tiere zurück.
-     * 
-     * @return Liste aller Animals
-     */
     @RequestMapping("/animal")
     public List<Animal> getAnimalList() {
+        logger.info("GET /animal - Rufe Liste aller Tiere ab");
         return animalService.getAnimalList();
     }
 
-    /**
-     * Gibt ein einzelnes Tier anhand der ID zurück.
-     * 
-     * @param id ID des gesuchten Tiers
-     * @return Animal-Objekt
-     */
     @RequestMapping("/animal/{id}")
     public Animal getAnimal(@PathVariable(value = "id") int id) {
+        logger.info("GET /animal/{} - Rufe Tier mit ID {} ab", id, id);
         return animalService.getAnimal(id);
     }
 
-    /**
-     * Fügt ein neues Tier hinzu.
-     * 
-     * @param animal Neues Animal-Objekt
-     */
     @RequestMapping(method = RequestMethod.POST, value = "/animal")
     public void addAnimal(@RequestBody Animal animal) {
+        logger.info("POST /animal - Füge neues Tier hinzu: {}", animal);
         animalService.addAnimal(animal);
     }
 
-    /**
-     * Aktualisiert ein vorhandenes Tier anhand der ID.
-     * 
-     * @param id ID des zu aktualisierenden Tiers
-     * @param animal Aktualisierte Daten
-     */
     @RequestMapping(method = RequestMethod.PUT, value = "/animal/{id}")
     public void updateAnimal(@PathVariable(value = "id") int id, @RequestBody Animal animal) {
+        logger.info("PUT /animal/{} - Aktualisiere Tier mit ID {}", id, id);
         animalService.updateAnimal(id, animal);
     }
 
-    /**
-     * Löscht ein Tier anhand der ID.
-     * 
-     * @param id ID des zu löschenden Tiers
-     */
     @RequestMapping(method = RequestMethod.DELETE, value = "/animal/{id}")
     public void deleteAnimal(@PathVariable(value = "id") int id) {
+        logger.info("DELETE /animal/{} - Lösche Tier mit ID {}", id, id);
         animalService.deleteAnimal(id);
     }
 }

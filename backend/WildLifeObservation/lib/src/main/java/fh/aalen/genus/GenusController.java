@@ -9,11 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Stellt HTTP-Endpunkte für Genus-Ressourcen bereit.
  */
 @RestController
 public class GenusController {
+
+    private static final Logger logger = LoggerFactory.getLogger(GenusController.class);
 
     @Autowired
     private GenusService genusService;
@@ -25,6 +30,7 @@ public class GenusController {
      */
     @RequestMapping("/genus")
     public List<Genus> getGenusList() {
+        logger.info("HTTP GET /genus aufgerufen - gebe alle Gattungen zurück.");
         return genusService.getGenusList();
     }
 
@@ -36,6 +42,7 @@ public class GenusController {
      */
     @RequestMapping("/genus/{id}")
     public Genus getGenus(@PathVariable(value = "id") int id) {
+        logger.info("HTTP GET /genus/{} aufgerufen.", id);
         return genusService.getGenus(id);
     }
 
@@ -46,6 +53,7 @@ public class GenusController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/genus")
     public void addGenus(@RequestBody Genus genus) {
+        logger.info("HTTP POST /genus - neue Gattung hinzufügen: {}", genus.getDesignation());
         genusService.addGenus(genus);
     }
 
@@ -57,6 +65,7 @@ public class GenusController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/genus/{id}")
     public void updateGenus(@PathVariable(value = "id") int id, @RequestBody Genus genus) {
+        logger.info("HTTP PUT /genus/{} - Gattung aktualisieren.", id);
         genusService.updateGenus(id, genus);
     }
 
@@ -67,6 +76,7 @@ public class GenusController {
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "/genus/{id}")
     public void deleteGenus(@PathVariable(value = "id") int id) {
+        logger.info("HTTP DELETE /genus/{} - Gattung löschen.", id);
         genusService.deleteGenus(id);
     }
 }

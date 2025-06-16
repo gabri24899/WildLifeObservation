@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LocationService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LocationService.class);
 
     @Autowired
     private LocationRepository locationRepository;
@@ -19,11 +23,13 @@ public class LocationService {
      * @return Liste aller Locations aus der Datenbank
      */
     public List<Location> getLocationList() {
+        logger.info("Rufe Liste aller Locations aus der Datenbank ab");
         ArrayList<Location> mylist = new ArrayList<>();
         Iterator<Location> it = locationRepository.findAll().iterator();
         while (it.hasNext()) {
             mylist.add(it.next());
         }
+        logger.info("Anzahl gefundener Locations: {}", mylist.size());
         return mylist;
     }
 
@@ -34,6 +40,7 @@ public class LocationService {
      * @return Location-Objekt oder null, falls nicht gefunden
      */
     public Location getLocation(int lnr) {
+        logger.info("Suche Location mit ID {}", lnr);
         return locationRepository.findById(lnr).orElse(null);
     }
 
@@ -43,6 +50,7 @@ public class LocationService {
      * @param location Location-Objekt, das gespeichert werden soll
      */
     public void addLocation(Location location) {
+        logger.info("Füge neue Location hinzu: {}", location);
         locationRepository.save(location);
     }
 
@@ -53,6 +61,7 @@ public class LocationService {
      * @param location Location-Objekt mit neuen Daten
      */
     public void updateLocation(int lnr, Location location) {
+        logger.info("Aktualisiere Location mit ID {}", lnr);
         locationRepository.save(location);
     }
 
@@ -62,6 +71,7 @@ public class LocationService {
      * @param lnr ID der zu löschenden Location
      */
     public void deleteLocation(int lnr) {
+        logger.info("Lösche Location mit ID {}", lnr);
         locationRepository.deleteById(lnr);
     }
 }

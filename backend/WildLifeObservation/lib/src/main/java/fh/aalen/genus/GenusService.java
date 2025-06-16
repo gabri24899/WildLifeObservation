@@ -6,9 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service // Markiert die Klasse als Service-Komponente
 public class GenusService {
+
+    private static final Logger logger = LoggerFactory.getLogger(GenusService.class);
 
     @Autowired
     private GenusRepository genusRepository;
@@ -19,12 +23,13 @@ public class GenusService {
      * @return Liste aller Gattungen aus der Datenbank
      */
     public List<Genus> getGenusList() {
-        // Erzeugt eine neue Liste und füllt sie mit Einträgen aus der Datenbank
+        logger.info("Rufe Liste aller Gattungen ab.");
         ArrayList<Genus> mylist = new ArrayList<>();
         Iterator<Genus> it = genusRepository.findAll().iterator();
         while (it.hasNext()) {
             mylist.add(it.next());
         }
+        logger.debug("Anzahl gefundener Gattungen: {}", mylist.size());
         return mylist;
     }
     
@@ -35,6 +40,7 @@ public class GenusService {
      * @return Gattung mit der gegebenen ID oder null, falls nicht gefunden
      */
     public Genus getGenus(int id) {
+        logger.info("Suche Gattung mit ID: {}", id);
         return genusRepository.findById(id).orElse(null);
     }
     
@@ -44,6 +50,7 @@ public class GenusService {
      * @param genus Gattung, die hinzugefügt werden soll
      */
     public void addGenus(Genus genus) {
+        logger.info("Füge neue Gattung hinzu: {}", genus.getDesignation());
         genusRepository.save(genus);
     }
     
@@ -54,6 +61,7 @@ public class GenusService {
      * @param genus Gattung mit den neuen Daten
      */
     public void updateGenus(int id, Genus genus) {
+        logger.info("Aktualisiere Gattung mit ID: {}", id);
         genusRepository.save(genus);
     }
 
@@ -63,6 +71,7 @@ public class GenusService {
      * @param id ID der zu löschenden Gattung
      */
     public void deleteGenus(int id) {
+        logger.info("Lösche Gattung mit ID: {}", id);
         genusRepository.deleteById(id);
     }
 }
