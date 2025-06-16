@@ -175,8 +175,7 @@ form select:focus {
     td:last-child button:hover {
       background: #bb141b;
     }
-
-    form {
+  form {
       max-width: 600px;
       margin: 0 auto 60px auto;
       background: var(--white);
@@ -200,6 +199,8 @@ form select:focus {
       border-radius: 8px;
       font-size: 14px;
       width: 100%;
+      box-sizing: border-box;
+      height: 40px;
     }
 
     form button {
@@ -216,6 +217,59 @@ form select:focus {
 
     form button:hover {
       background-color: #333;
+    }
+
+    /* Hamburger menu */
+    #menuToggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 26px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: var(--card);
+      box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+      padding: 60px 20px 20px 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      height: 100%;
+      z-index: 999;
+    }
+
+    #sideMenu.open {
+      transform: translateX(0);
+    }
+
+    #sideMenu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #sideMenu li {
+      margin-bottom: 16px;
+    }
+
+    #sideMenu a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
     }
 
     hr {
@@ -238,7 +292,18 @@ form select:focus {
 </head>
 <body>
 
-  <h1>Tiere</h1>
+  <button id="menuToggle">&#9776;</button>
+  <nav id="sideMenu">
+    <ul>
+      <li><a href="#" data-target="animalsSection">Tiere</a></li>
+      <li><a href="#" data-target="genusSection">Gattungen</a></li>
+      <li><a href="#" data-target="locationSection">Orte</a></li>
+      <li><a href="#" data-target="observationSection">Beobachtungen</a></li>
+    </ul>
+  </nav>
+
+  <div id="animalsSection" class="content-section active">
+    <h1>Tiere</h1>
   <table id="animalTable">
     <thead>
       <tr>
@@ -274,9 +339,11 @@ form select:focus {
     </select>
     <button type="submit">Hinzufügen</button>
   </form>
+  </div>
 
   <hr>
 
+  <div id="genusSection" class="content-section">
   <h1>Gattungen</h1>
   <table id="genusTable">
     <thead>
@@ -296,9 +363,11 @@ form select:focus {
     <input type="text" name="latinDesignation" required>
     <button type="submit">Hinzufügen</button>
   </form>
+  </div>
 
   <hr>
 
+  <div id="locationSection" class="content-section">
   <h1>Orte</h1>
   <table id="locationTable">
     <thead>
@@ -318,9 +387,11 @@ form select:focus {
     <input type="text" name="description" required>
     <button type="submit">Hinzufügen</button>
   </form>
+  </div>
 
   <hr>
 
+  <div id="observationSection" class="content-section">
   <h1>Beobachtungen</h1>
   <table id="observedTable">
     <thead>
@@ -343,6 +414,7 @@ form select:focus {
     <input type="time" name="time" required>
     <button type="submit">Hinzufügen</button>
   </form>
+  </div>
 
 <script>
   const apiBase = 'http://localhost:8080';
@@ -550,6 +622,22 @@ form select:focus {
   loadGenus();
   loadLocations();
   loadObservations();
+// Navigation
+  const menu = document.getElementById('sideMenu');
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    menu.classList.toggle('open');
+  });
+  document.querySelectorAll('#sideMenu a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.target;
+      document.querySelectorAll('.content-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.getElementById(target).classList.add('active');
+      menu.classList.remove('open');
+    });
+  });
 </script>
 </body>
 </html>
