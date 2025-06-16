@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Animal {
 
     @Id // Primärschlüssel
+    
     private int id;
 
     private String gender;
