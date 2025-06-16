@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Willkommen</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('startseite.png') no-repeat center center;
+      background-size: cover;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255,255,255,0.3);
+      pointer-events: none;
+    }
+
+    .content {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 40px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Abstand zwischen Text & Button */
+  z-index: 2;
+}
+
+
+    h1 {
+      color: #2c3e50;
+      font-size: 40px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      position: relative;
+      padding: 14px 32px;
+      background-color: #6e9f44;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .btn:hover::after {
+      content: ' 🐾';
+      opacity: 0.8;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      z-index: 3;
+    }
+
+    .lang-toggle a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
+      transition: color 0.2s;
+    }
+
+    .lang-toggle a:hover {
+      color: #ddd;
+    }
+    @keyframes blurOut {
+  0% {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    filter: blur(20px) brightness(60%);
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.blur-effect {
+  animation: blurOut 1s ease forwards;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="overlay"></div>
+
+  <div class="lang-toggle">
+    <a href="Startseite.html">DE</a> | <a href="Startseite-en.html">EN</a>
+  </div>
+
+  <div class="content">
+  <h1>WildLifeObservation</h1>
+  <button class="btn" id="weiterButton">Go Wild</button>
+</div>
+<script>
+  document.getElementById("weiterButton").addEventListener("click", function () {
+    document.body.classList.add("blur-effect");
+
+    setTimeout(function () {
+      window.location.href = "Webseite.html";
+    }, 800); // Warten, bis Animation fertig
+  });
+</script>
+</body>
+</html>
