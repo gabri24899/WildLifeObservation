@@ -353,7 +353,9 @@ form select:focus {
   <form id="addAnimalForm">
     <label>ID:</label>
     
-    <input type="number" name="id" min="1" required>
+   <input type="number" name="id" min="1" max="999999" required
+           oninvalid="this.setCustomValidity('ID darf höchstens 6-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Geschlecht:</label>
     <select name="gender" id="genderSelect" required>
       <option value="">Bitte wählen</option>
@@ -362,13 +364,19 @@ form select:focus {
     </select>
     <label>Alter (Jahre):</label>
    
-    <input type="number" name="estimatedAge" min="0" required>
+    <input type="number" name="estimatedAge" min="0" max="999"
+           required oninvalid="this.setCustomValidity('Alter darf höchstens 3-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Gewicht (kg):</label>
    
-    <input type="number" name="estimatedWeight" step="0.1" min="0" required>
+    <input type="number" name="estimatedWeight" step="0.1" min="0" max="999999"
+           required oninvalid="this.setCustomValidity('Gewicht darf höchstens 6-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Größe (cm):</label>
    
-    <input type="number" name="estimatedSize" step="0.1" min="0" required>
+    <input type="number" name="estimatedSize" step="0.1" min="0" max="9999"
+           required oninvalid="this.setCustomValidity('Größe darf höchstens 4-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Gattung:</label>
     <select name="genusId" id="genusSelect" required>
       <option value="">Bitte wählen</option>
@@ -384,7 +392,9 @@ form select:focus {
   <form id="addGenusForm">
     <label>ID:</label>
     
-    <input type="number" name="id" min="1" required>
+    <input type="number" name="id" min="1" max="999999" required
+           oninvalid="this.setCustomValidity('ID darf höchstens 6-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Bezeichnung:</label>
     <input type="text" name="designation" required>
     <label>Lateinische Bezeichnung:</label>
@@ -400,7 +410,9 @@ form select:focus {
   <form id="addLocationForm">
     <label>ID:</label>
    
-    <input type="number" name="id" min="1" required>
+    <input type="number" name="id" min="1" max="999999" required
+           oninvalid="this.setCustomValidity('ID darf höchstens 6-stellig sein.')"
+           oninput="this.setCustomValidity('')">
     <label>Kurzbezeichnung:</label>
     <input type="text" name="shortTitle" required>
     <label>Beschreibung:</label>

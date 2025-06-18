@@ -26,6 +26,20 @@ public class AnimalService {
     @Autowired
     private GenusRepository genusRepository;
 
+    private void validateAnimal(Animal animal) {
+        if (String.valueOf(animal.getId()).length() > 6) {
+            throw new IllegalArgumentException("ID darf höchstens 6-stellig sein.");
+        }
+        if (animal.getEstimatedAge() > 999) {
+            throw new IllegalArgumentException("Alter darf höchstens 3-stellig sein.");
+        }
+        if (animal.getEstimatedWeight() > 999999) {
+            throw new IllegalArgumentException("Gewicht darf höchstens 6-stellig sein.");
+        }
+        if (animal.getEstimatedSize() > 9999) {
+            throw new IllegalArgumentException("Größe darf höchstens 4-stellig sein.");
+        }
+    }
     public List<Animal> getAnimalList() {
         logger.info("Rufe Liste aller Tiere ab.");
         ArrayList<Animal> mylist = new ArrayList<>();
@@ -48,6 +62,7 @@ public class AnimalService {
 
     public void addAnimal(Animal animal) {
         logger.info("Füge neues Tier hinzu: {}", animal);
+        validateAnimal(animal);
         if (animal.getGenus() != null && animal.getGenus().getId() != 0) {
             Genus genus = genusRepository.findById(animal.getGenus().getId()).orElse(null);
             animal.setGenus(genus);
@@ -60,6 +75,7 @@ public class AnimalService {
 
     public void updateAnimal(int id, Animal animal) {
         logger.info("Aktualisiere Tier mit ID: {}", id);
+        validateAnimal(animal);
         if (animal.getGenus() != null && animal.getGenus().getId() != 0) {
             Genus genus = genusRepository.findById(animal.getGenus().getId()).orElse(null);
             animal.setGenus(genus);

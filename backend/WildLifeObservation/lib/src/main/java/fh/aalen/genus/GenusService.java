@@ -16,7 +16,11 @@ public class GenusService {
 
     @Autowired
     private GenusRepository genusRepository;
-
+    private void validateGenus(Genus genus) {
+        if (String.valueOf(genus.getId()).length() > 6) {
+            throw new IllegalArgumentException("ID darf höchstens 6-stellig sein.");
+        }
+    }
     /**
      * Gibt eine Liste aller Gattungen zurück.
      * 
@@ -51,6 +55,7 @@ public class GenusService {
      */
     public void addGenus(Genus genus) {
         logger.info("Füge neue Gattung hinzu: {}", genus.getDesignation());
+        validateGenus(genus);
         genusRepository.save(genus);
     }
     
@@ -62,6 +67,7 @@ public class GenusService {
      */
     public void updateGenus(int id, Genus genus) {
         logger.info("Aktualisiere Gattung mit ID: {}", id);
+        validateGenus(genus);
         genusRepository.save(genus);
     }
 

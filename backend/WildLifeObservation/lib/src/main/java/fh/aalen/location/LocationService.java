@@ -16,7 +16,12 @@ public class LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
-
+    
+    private void validateLocation(Location location) {
+        if (String.valueOf(location.getId()).length() > 6) {
+            throw new IllegalArgumentException("ID darf höchstens 6-stellig sein.");
+        }
+    }
     /**
      * Gibt eine Liste aller Locations zurück.
      * 
@@ -51,6 +56,7 @@ public class LocationService {
      */
     public void addLocation(Location location) {
         logger.info("Füge neue Location hinzu: {}", location);
+        validateLocation(location);
         locationRepository.save(location);
     }
 
@@ -62,6 +68,7 @@ public class LocationService {
      */
     public void updateLocation(int lnr, Location location) {
         logger.info("Aktualisiere Location mit ID {}", lnr);
+        validateLocation(location);
         locationRepository.save(location);
     }
 
