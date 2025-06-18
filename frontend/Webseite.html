@@ -446,6 +446,7 @@ form select:focus {
 
 <script>
   const apiBase = 'http://localhost:8080';
+  let genusData = [];
 
   // --- Tiere ---
   function loadAnimals() {
@@ -464,7 +465,10 @@ form select:focus {
             <td>${a.estimatedWeight}</td>
             <td>${a.estimatedSize}</td>
             <td>${genusName}</td>
-           <td class="actions"><button onclick="deleteAnimal(${a.id})">Löschen</button></td>
+           <td class="actions">
+              <button onclick="toggleUpdateAnimal(this, ${a.id})">Update</button>
+              <button onclick="deleteAnimal(${a.id})">Löschen</button>
+            </td>
           `;
           tbody.appendChild(tr);
         });
@@ -485,6 +489,46 @@ form select:focus {
   function deleteAnimal(id) {
     fetch(apiBase + '/animal/' + id, { method: 'DELETE' })
       .then(() => loadAnimals());
+  }
+
+  function toggleUpdateAnimal(btn, id) {
+    const tr = btn.closest('tr');
+    if (btn.dataset.editing !== 'true') {
+      btn.dataset.editing = 'true';
+      btn.textContent = 'Speichern';
+      const cells = tr.querySelectorAll('td');
+      cells[1].innerHTML = `<input value="${cells[1].textContent}">`;
+      cells[2].innerHTML = `<input type="number" value="${cells[2].textContent}">`;
+      cells[3].innerHTML = `<input type="number" value="${cells[3].textContent}">`;
+      cells[4].innerHTML = `<input type="number" value="${cells[4].textContent}">`;
+      const select = document.createElement('select');
+      select.innerHTML = '<option value="">Bitte wählen</option>';
+      genusData.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g.id;
+        opt.textContent = g.designation;
+        if (cells[5].textContent.includes(g.designation)) opt.selected = true;
+        select.appendChild(opt);
+      });
+      cells[5].textContent = '';
+      cells[5].appendChild(select);
+    } else {
+      const cells = tr.querySelectorAll('td');
+      const animal = {
+        id: id,
+        gender: cells[1].querySelector('input').value,
+        estimatedAge: parseInt(cells[2].querySelector('input').value),
+        estimatedWeight: parseFloat(cells[3].querySelector('input').value),
+        estimatedSize: parseFloat(cells[4].querySelector('input').value)
+      };
+      const genusSel = cells[5].querySelector('select');
+      animal.genus = genusSel.value ? {id: parseInt(genusSel.value)} : null;
+      fetch(apiBase + '/animal/' + id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(animal)
+      }).then(() => loadAnimals());
+    }
   }
 
   document.getElementById('addAnimalForm').addEventListener('submit', e => {
@@ -518,6 +562,7 @@ form select:focus {
     fetch(apiBase + '/genus')
       .then(res => res.json())
       .then(data => {
+       genusData = data; 
         // Dropdown für Tierformular
         const select = document.getElementById('genusSelect');
         select.innerHTML = '<option value="">Bitte wählen</option>';
@@ -586,7 +631,10 @@ form select:focus {
             <td>${l.id}</td>
             <td class="center">${l.shortTitle}</td>
             <td>${l.description}</td>
-            <td class="actions"><button onclick="deleteLocation(${l.id})">Löschen</button></td>
+            <td class="actions">
+              <button onclick="toggleUpdateLocation(this, ${l.id})">Update</button>
+              <button onclick="deleteLocation(${l.id})">Löschen</button>
+            </td>
           `;
           tbody.appendChild(tr);
         });
@@ -606,6 +654,29 @@ form select:focus {
   function deleteLocation(id) {
     fetch(apiBase + '/location/' + id, { method: 'DELETE' })
       .then(() => loadLocations());
+  }
+
+  function toggleUpdateLocation(btn, id) {
+    const tr = btn.closest('tr');
+    if (btn.dataset.editing !== 'true') {
+      btn.dataset.editing = 'true';
+      btn.textContent = 'Speichern';
+      const cells = tr.querySelectorAll('td');
+      cells[1].innerHTML = `<input value="${cells[1].textContent}">`;
+      cells[2].innerHTML = `<input value="${cells[2].textContent}">`;
+    } else {
+      const cells = tr.querySelectorAll('td');
+      const location = {
+        id: id,
+        shortTitle: cells[1].querySelector('input').value,
+        description: cells[2].querySelector('input').value
+      };
+      fetch(apiBase + '/location/' + id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(location)
+      }).then(() => loadLocations());
+    }
   }
 
   document.getElementById('addLocationForm').addEventListener('submit', e => {
@@ -676,8 +747,9 @@ form select:focus {
   });
 
   // Lade alle Daten initial
-  loadAnimals();
+  
   loadGenus();
+  loadAnimals();
   loadLocations();
   loadObservations();
 // Navigation
