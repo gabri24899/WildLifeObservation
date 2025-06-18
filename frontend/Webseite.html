@@ -527,9 +527,14 @@ form select:focus {
       cells[5].appendChild(select);
     } else {
       const cells = tr.querySelectorAll('td');
+      const gender = cells[1].querySelector('select').value;
+      if(!gender){
+        alert('Bitte ein Geschlecht auswählen.');
+        return;
+      }
       const animal = {
         id: id,
-        gender: cells[1].querySelector('select').value,
+        gender: gender,
         estimatedAge: parseInt(cells[2].querySelector('input').value),
         estimatedWeight: parseFloat(cells[3].querySelector('input').value),
         estimatedSize: parseFloat(cells[4].querySelector('input').value)
@@ -679,10 +684,20 @@ form select:focus {
       cells[2].innerHTML = `<input value="${cells[2].textContent}">`;
     } else {
       const cells = tr.querySelectorAll('td');
+      const shortTitle = cells[1].querySelector('input').value.trim();
+      const description = cells[2].querySelector('input').value.trim();
+      if(!shortTitle || !description){
+        alert('Kurzbezeichnung und Beschreibung dürfen nicht leer sein.');
+        return;
+      }
+
+
+
+
       const location = {
         id: id,
-        shortTitle: cells[1].querySelector('input').value,
-        description: cells[2].querySelector('input').value
+        shortTitle: shortTitle,
+        description: description
       };
       fetch(apiBase + '/location/' + id, {
         method: 'PUT',
