@@ -414,12 +414,16 @@ form select:focus {
   <div id="observationSection" class="content-section">
   <h1>Beobachtung anlegen</h1>
   <form id="addObservedForm">
-    <label>Tier ID:</label>
-    
-    <input type="number" name="animalId" min="1" required>
-    <label>Ort ID:</label>
-    
-    <input type="number" name="locationId" min="1" required>
+   <label>Tier:</label>
+
+    <select name="animalId" id="animalSelect" required>
+      <option value="">Bitte wählen</option>
+    </select>
+    <label>Ort:</label>
+
+    <select name="locationId" id="locationSelect" required>
+      <option value="">Bitte wählen</option>
+    </select>
     <label>Datum:</label>
     <input type="date" name="date" required>
     <label>Zeit:</label>
@@ -452,6 +456,17 @@ form select:focus {
           `;
           tbody.appendChild(tr);
         });
+        const animalSelect = document.getElementById('animalSelect');
+        if (animalSelect) {
+          animalSelect.innerHTML = '<option value="">Bitte wählen</option>';
+          data.forEach(a => {
+            const option = document.createElement('option');
+            option.value = a.id;
+            const genusName = a.genus ? `${a.genus.designation}` : '';
+            option.textContent = `ID ${a.id} ${genusName}`.trim();
+            animalSelect.appendChild(option);
+          });
+        }
       });
   }
 
@@ -557,6 +572,16 @@ form select:focus {
           `;
           tbody.appendChild(tr);
         });
+        const locationSelect = document.getElementById('locationSelect');
+        if (locationSelect) {
+          locationSelect.innerHTML = '<option value="">Bitte wählen</option>';
+          data.forEach(l => {
+            const option = document.createElement('option');
+            option.value = l.id;
+            option.textContent = `ID ${l.id} - ${l.shortTitle}`;
+            locationSelect.appendChild(option);
+          });
+        }
       });
   }
 
