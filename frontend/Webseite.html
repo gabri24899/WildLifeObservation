@@ -295,25 +295,53 @@ form select:focus {
   <button id="menuToggle">&#9776;</button>
   <nav id="sideMenu">
     <ul>
-      <li><a href="#" data-target="animalsSection">Tiere</a></li>
-      <li><a href="#" data-target="genusSection">Gattungen</a></li>
-      <li><a href="#" data-target="locationSection">Orte</a></li>
-      <li><a href="#" data-target="observationSection">Beobachtungen</a></li>
+     <li><a href="#" data-target="overviewSection">Übersicht</a></li>
+      <li><a href="#" data-target="animalsSection">Tiere anlegen</a></li>
+      <li><a href="#" data-target="genusSection">Gattungen anlegen</a></li>
+      <li><a href="#" data-target="locationSection">Orte anlegen</a></li>
+      <li><a href="#" data-target="observationSection">Beobachtungen anlegen</a></li>
     </ul>
   </nav>
 
-  <div id="animalsSection" class="content-section active">
-    <h1>Tiere</h1>
-  <table id="animalTable">
-    <thead>
-      <tr>
-        <th>ID</th><th>Geschlecht</th><th>Alter</th><th>Gewicht</th><th>Größe</th><th>Gattung</th><th>Aktionen</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+ <div id="overviewSection" class="content-section active">
+    <h1>Übersicht</h1>
+    <h2>Tiere</h2>
+    <table id="animalTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Geschlecht</th><th>Alter</th><th>Gewicht</th><th>Größe</th><th>Gattung</th><th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  <h2>Neues Tier anlegen</h2>
+    <h2>Gattungen</h2>
+    <table id="genusTable">
+      <thead>
+        <tr><th>ID</th><th>Bezeichnung</th><th>Lateinische Bezeichnung</th><th>Aktionen</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2>Orte</h2>
+    <table id="locationTable">
+      <thead>
+        <tr><th>ID</th><th>Kurzbezeichnung</th><th>Beschreibung</th><th>Aktionen</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2>Beobachtungen</h2>
+    <table id="observedTable">
+      <thead>
+        <tr><th>ID</th><th>Tier ID</th><th>Ort ID</th><th>Datum</th><th>Zeit</th><th>Aktionen</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="animalsSection" class="content-section">
+    <h1>Tier anlegen</h1>
   <form id="addAnimalForm">
     <label>ID:</label>
     
@@ -344,15 +372,7 @@ form select:focus {
   <hr>
 
   <div id="genusSection" class="content-section">
-  <h1>Gattungen</h1>
-  <table id="genusTable">
-    <thead>
-      <tr><th>ID</th><th>Bezeichnung</th><th>Lateinische Bezeichnung</th><th>Aktionen</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2>Neue Gattung anlegen</h2>
+  <h1>Gattung anlegen</h1>
   <form id="addGenusForm">
     <label>ID:</label>
     
@@ -368,15 +388,7 @@ form select:focus {
   <hr>
 
   <div id="locationSection" class="content-section">
-  <h1>Orte</h1>
-  <table id="locationTable">
-    <thead>
-      <tr><th>ID</th><th>Kurzbezeichnung</th><th>Beschreibung</th><th>Aktionen</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2>Neuen Ort anlegen</h2>
+  <h1>Ort anlegen</h1>
   <form id="addLocationForm">
     <label>ID:</label>
    
@@ -392,15 +404,7 @@ form select:focus {
   <hr>
 
   <div id="observationSection" class="content-section">
-  <h1>Beobachtungen</h1>
-  <table id="observedTable">
-    <thead>
-      <tr><th>ID</th><th>Tier ID</th><th>Ort ID</th><th>Datum</th><th>Zeit</th><th>Aktionen</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2>Neue Beobachtung anlegen</h2>
+  <h1>Beobachtung anlegen</h1>
   <form id="addObservedForm">
     <label>Tier ID:</label>
     
