@@ -497,7 +497,20 @@ form select:focus {
       btn.dataset.editing = 'true';
       btn.textContent = 'Speichern';
       const cells = tr.querySelectorAll('td');
-      cells[1].innerHTML = `<input value="${cells[1].textContent}">`;
+      const genderSelect = document.createElement('select');
+      genderSelect.innerHTML =` 
+        <option value="">Bitte wählen</option>
+        <option value="männlich">männlich</option>
+        <option value="weiblich">weiblich</option>`;
+      Array.from(genderSelect.options).forEach(opt => {
+        if(opt.value === cells[1].textContent) opt.selected = true;
+      });
+      cells[1].textContent = '';
+      cells[1].appendChild(genderSelect);
+
+
+
+
       cells[2].innerHTML = `<input type="number" value="${cells[2].textContent}">`;
       cells[3].innerHTML = `<input type="number" value="${cells[3].textContent}">`;
       cells[4].innerHTML = `<input type="number" value="${cells[4].textContent}">`;
@@ -516,7 +529,7 @@ form select:focus {
       const cells = tr.querySelectorAll('td');
       const animal = {
         id: id,
-        gender: cells[1].querySelector('input').value,
+        gender: cells[1].querySelector('select').value,
         estimatedAge: parseInt(cells[2].querySelector('input').value),
         estimatedWeight: parseFloat(cells[3].querySelector('input').value),
         estimatedSize: parseFloat(cells[4].querySelector('input').value)
