@@ -163,6 +163,21 @@ form select:focus {
       color: var(--dark);
     }
 
+    .sort-controls {
+      display: inline-flex;
+      flex-direction: column;
+      margin-left: 4px;
+    }
+
+    .sortBtn {
+      border: none;
+      background: none;
+      padding: 0;
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
     td:last-child button {
       background: var(--accent);
       color: white;
@@ -193,7 +208,7 @@ form select:focus {
       width: 100%;
       box-sizing: border-box;
     }
-    
+
     .center {
       text-align: center;
     }
@@ -767,6 +782,44 @@ form select:focus {
       .then(() => loadObservations());
   }
 
+  function sortTable(table, col, asc) {
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      const getVal = row => row.children[col].textContent.trim();
+      const v1 = getVal(a);
+      const v2 = getVal(b);
+      const n1 = parseFloat(v1.replace(',', '.'));
+      const n2 = parseFloat(v2.replace(',', '.'));
+      if (!isNaN(n1) && !isNaN(n2)) {
+        return asc ? n1 - n2 : n2 - n1;
+      }
+      return asc ? v1.localeCompare(v2) : v2.localeCompare(v1);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  }
+
+  function initSorting() {
+    document.querySelectorAll('table').forEach(table => {
+      const headers = table.querySelectorAll('th:not(.actions)');
+      headers.forEach((th, idx) => {
+        const span = document.createElement('span');
+        span.className = 'sort-controls';
+        const up = document.createElement('button');
+        up.textContent = '▲';
+        up.className = 'sortBtn';
+        up.addEventListener('click', () => sortTable(table, idx, true));
+        const down = document.createElement('button');
+        down.textContent = '▼';
+        down.className = 'sortBtn';
+        down.addEventListener('click', () => sortTable(table, idx, false));
+        span.appendChild(up);
+        span.appendChild(down);
+        th.appendChild(span);
+      });
+    });
+  }
+
   document.getElementById('addObservedForm').addEventListener('submit', e => {
     e.preventDefault();
     const form = e.target;
@@ -792,6 +845,7 @@ form select:focus {
   loadAnimals();
   loadLocations();
   loadObservations();
+  initSorting();
 // Navigation
   const menu = document.getElementById('sideMenu');
   document.getElementById('menuToggle').addEventListener('click', () => {
