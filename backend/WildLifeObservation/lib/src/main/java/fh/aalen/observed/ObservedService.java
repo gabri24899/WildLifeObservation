@@ -29,6 +29,7 @@ public class ObservedService {
         while (it.hasNext()) {
             mylist.add(it.next());
         }
+        
         logger.info("Anzahl gefundener Beobachtungen: {}", mylist.size());
         return mylist;
     }
