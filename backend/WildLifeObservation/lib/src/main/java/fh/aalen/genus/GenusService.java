@@ -1,11 +1,15 @@
 package fh.aalen.genus;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +60,10 @@ public class GenusService {
     public void addGenus(Genus genus) {
         logger.info("Füge neue Gattung hinzu: {}", genus.getDesignation());
         validateGenus(genus);
+        if (genusRepository.existsById(genus.getId())) {
+            logger.warn("Gattung mit ID {} existiert bereits.", genus.getId());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Gattung schon vorhanden");
+        }
         genusRepository.save(genus);
     }
     

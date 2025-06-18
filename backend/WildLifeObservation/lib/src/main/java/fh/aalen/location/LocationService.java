@@ -1,13 +1,19 @@
 package fh.aalen.location;
 
 import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 @Service
 public class LocationService {
@@ -57,6 +63,10 @@ public class LocationService {
     public void addLocation(Location location) {
         logger.info("Füge neue Location hinzu: {}", location);
         validateLocation(location);
+        if (locationRepository.existsById(location.getId())) {
+            logger.warn("Location mit ID {} existiert bereits.", location.getId());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ort schon vorhanden");
+        }
         locationRepository.save(location);
     }
 

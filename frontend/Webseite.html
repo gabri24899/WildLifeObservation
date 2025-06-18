@@ -504,10 +504,13 @@ form select:focus {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(animal)
-    }).then(() => {
+    }).then(res => {
+      if(!res.ok){
+        return res.json().then(d => Promise.reject(d.message || 'id ist schon vergeben '));
+      }
       form.reset();
       loadAnimals();
-    });
+    }).catch(err => alert(err));
   });
 
   // --- Gattungen ---
@@ -561,10 +564,13 @@ form select:focus {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(genus)
-    }).then(() => {
+    }).then(res => {
+      if(!res.ok){
+        return res.json().then(d => Promise.reject(d.message || 'id ist schon vergeben'));
+      }
       form.reset();
       loadGenus();
-    });
+    }).catch(err => alert(err));
   });
 
   // --- Locations ---
@@ -614,10 +620,13 @@ form select:focus {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(location)
-    }).then(() => {
+    }).then(res => {
+      if(!res.ok){
+        return res.json().then(d => Promise.reject(d.message || 'id ist schon vergeben'));
+      }
       form.reset();
       loadLocations();
-    });
+    }).catch(err => alert(err));
   });
 
   // --- Beobachtungen ---
