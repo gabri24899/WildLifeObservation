@@ -353,6 +353,10 @@ form select:focus {
   transform: translateX(30px); 
 }
 
+#animalTable td:nth-child(7) {
+  transform: translateX(0px); 
+}
+
 
 
 #genusTable td:nth-child(1) {
@@ -365,6 +369,10 @@ form select:focus {
 
 #genusTable td:nth-child(3) {
   transform: translateX(165px); 
+}
+
+#genusTable td:nth-child(4) {
+  transform: translateX(0px); 
 }
 
     
@@ -380,6 +388,11 @@ form select:focus {
  #locationTable td:nth-child(3) {
   transform: translateX(80px); 
 }
+
+#locationTable td:nth-child(4) {
+  transform: translateX(0px); 
+}
+
 
 
 #observedTable td:nth-child(1) {
@@ -401,6 +414,11 @@ form select:focus {
 #observedTable td:nth-child(5) {
   transform: translateX(35px); 
 }
+
+#observedTable td:nth-child(6) {
+  transform: translateX(0px); 
+}
+
   </style>
 </head>
 <body>
@@ -593,7 +611,13 @@ form select:focus {
 
   function deleteAnimal(id) {
     fetch(apiBase + '/animal/' + id, { method: 'DELETE' })
-      .then(() => loadAnimals());
+      .then(res => {
+        if(!res.ok){
+          return res.json().then(d => Promise.reject(d.message || 'Löschen nicht möglich es sind noch Abhängigkeiten vorhanden'));
+        }
+        loadAnimals();
+      })
+      .catch(err => alert(err));
   }
 
   function toggleUpdateAnimal(btn, id) {
@@ -714,10 +738,14 @@ form select:focus {
 
   function deleteGenus(id) {
     fetch(apiBase + '/genus/' + id, { method: 'DELETE' })
-      .then(() => {
+      .then(res => {
+        if(!res.ok){
+          return res.json().then(d => Promise.reject(d.message || 'Löschen nicht möglich Abhängigkeiten vorhanden '));
+        }
         loadGenus();
         loadAnimals(); // Tiere ggf. aktualisieren, falls Genus gelöscht wurde
-      });
+      })
+      .catch(err => alert(err));
   }
 
   document.getElementById('addGenusForm').addEventListener('submit', e => {
@@ -776,7 +804,13 @@ form select:focus {
 
   function deleteLocation(id) {
     fetch(apiBase + '/location/' + id, { method: 'DELETE' })
-      .then(() => loadLocations());
+      .then(res => {
+        if(!res.ok){
+          return res.json().then(d => Promise.reject(d.message || 'Löschen nicht möglich Abhängigkeiten vorhanden '));
+        }
+        loadLocations();
+      })
+      .catch(err => alert(err));
   }
 
   function toggleUpdateLocation(btn, id) {
@@ -857,7 +891,13 @@ form select:focus {
 
   function deleteObservation(id) {
     fetch(apiBase + '/observed/' + id, { method: 'DELETE' })
-      .then(() => loadObservations());
+     .then(res => {
+        if(!res.ok){
+          return res.json().then(d => Promise.reject(d.message || 'Löschen nicht möglich Abhängigkeiten vorhanden'));
+        }
+        loadObservations();
+      })
+      .catch(err => alert(err));
   }
 
   function sortTable(table, col, asc) {
